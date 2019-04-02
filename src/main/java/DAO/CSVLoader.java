@@ -55,16 +55,7 @@ public class CSVLoader {
     }
 
 
-    public int coulmnTranslator( String columnTiltle, String[] firstLine) {
-        int index = -1;
-        for (int i = 0; i < firstLine.length; i++) {
-            if (firstLine[i].equals(columnTiltle)) {
 
-                index = i;
-            }
-        }
-        return index;
-    }
 
 
 }

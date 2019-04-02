@@ -1,6 +1,7 @@
 package controler;
 
 import DAO.CSVLoader;
+import Function.Function;
 import view.View;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class Controler {
     CSVLoader csvLoader;
     List< List< String > > data;
     String[] firstLine;
+    Function function;
+
 
     public Controler(String path) {
         this.path = path;
@@ -24,63 +27,23 @@ public class Controler {
         data = csvLoader.getInputFile ( path ,"," );
         firstLine = csvLoader.getFirstLine(path ,",");
         view= new View();
+        function = new Function();
+
+        String[] titles = csvLoader.getFirstLine( path,"," );
 
 //        view.printListOfLists(filterRow( data,"participation", 5000 ));
-        view.printListOfLists(showColumn( filterRow( data,"participation", 5000 ), "full_name", "address","type" ));
+//        view.printListOfLists(function.showColumn( titles, function.filterRow( titles, data,"participation", 5000 ), "full_name","participation" ));
+
+        view.printListOfLists(  function.showColumn(titles, function.rowsAll(titles, data),"participation" ) );
+
+        int totalsum =  function.sumByColumn(  titles, data, "participation" );
+        view.printInt( totalsum );
+
 
     }
 
 
 
-    public void showCol(List<List< String >> data, String... args){
-//        Stream<String> arguments = Arrays.stream(args);
-        Object[] argumentes =  {1,2};
-        List<List< String >> column = new ArrayList<>();
-        data.stream().forEach( n-> {
-            for( Object arg : argumentes ){
-                System.out.print( n.get((Integer) arg) + " ");
-            }
-            System.out.println( );
-        });
-    }
-
-
-
-    public List<List< String >> showColumn(List<List< String >> data, String... args){
-//        Stream<String> arguments = Arrays.stream(args);
-        List<String> argsh = Arrays.asList(args);
-        String[] titles = csvLoader.getFirstLine( path,"," );
-
-        List<Integer> argumentes = new ArrayList<>();
-
-        for (String temp :argsh){
-            argumentes.add( csvLoader.coulmnTranslator( temp ,titles));
-        }
-
-        List<List< String >> column = new ArrayList<>();
-
-        data.stream().forEach( n-> {
-            for( Integer index : argumentes ){
-                column.add(Collections.singletonList(n.get(index)));
-            }
-        });
-
-        return column;
-    }
-
-
-
-
-    public List<List< String >> filterRow( List<List< String >> data, String columnTitle, Integer value ){
-
-        String[] titles = csvLoader.getFirstLine( path,"," );
-        int index = csvLoader.coulmnTranslator( columnTitle  ,titles);
-
-        return data.stream()
-                .filter( n-> Integer.valueOf( n.get(index) ) > value )
-                .collect(Collectors.toList());
-
-    }
 
 
 

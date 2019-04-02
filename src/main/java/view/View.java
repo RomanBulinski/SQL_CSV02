@@ -10,7 +10,9 @@ public class View {
                 .forEach(n-> System.out.println( n ));
     }
 
-
+    public void printInt( Integer num){
+         System.out.println( num );
+    }
 
 
 }
