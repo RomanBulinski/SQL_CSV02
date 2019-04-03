@@ -25,7 +25,6 @@ public class Function {
         return flag;
     }
 
-
     public List<List< String >>  remoweWhiteSpaces ( List<List< String >> data ){
         List<List< String >>  dataNoWhiteSpaces =  data.stream()
                 .map( n-> { if( n.get(0).equals(" ") ){
@@ -37,9 +36,6 @@ public class Function {
                 .collect(Collectors.toList());
         return  dataNoWhiteSpaces;
     }
-
-
-
 
     public List<List< String >> rowsAll( String[] titles, List<List< String >> data ){
         return data.stream()
