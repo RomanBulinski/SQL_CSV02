@@ -25,12 +25,9 @@ public class Controler {
     Function function;
 
 
-    public Controler(String path) {
+    public Controler() {
 
-        this.path = path;
         csvLoader = new CSVLoader();
-        data = csvLoader.getInputFile ( path ,"," );
-        firstLine = csvLoader.getFirstLine(path ,",");
         view= new View();
         function = new Function();
 
@@ -39,36 +36,55 @@ public class Controler {
     public void printMenu(){
         view.printString("MENU");
         view.printEmptyLine();
-        List<String> menuList = Arrays.asList("Type question : ","Exit : ");
+        List<String> menuList = Arrays.asList( "Type question : ","Exit : ");
         view.printMenu(menuList);
     }
 
     public void doJob(){
-
         switch( view.getInputInt( "Type your choise : " )) {
             case (1):
-                String[] titles = csvLoader.getFirstLine( path,"," );
-                switch(  view.getInputString("Type your SQL QUERY : ")){
-                    case ("select * from txt.csv"):
-                        view.printListOfLists(  function.rowsAll(titles, data) ) ;
-                        break;
-                    case ("yyy"):
 
-                        //        view.printListOfLists(filterRow( data,"participation", 5000 ));
-                        //        view.printListOfLists(function.showColumn( titles, function.filterRow( titles, data,"participation", 5000 ), "full_name","participation" ));
-
-                        view.printListOfLists(  function.showColumn(titles, function.rowsAll(titles, data),"full_name" ,"participation" ) );
-                        view.printListOfLists(  function.rowsAll(titles, data) ) ;
-
-                        view.isCorrectInformation( function.checkIfCSVisCorrect( data )   );
-
-                        //        int totalsum =  function.sumByColumn(  titles, data, "participation" );
-                        //        view.printInt( totalsum );
-
-                        break;
-                    default:
-                        // code block
+                String[] query = view.getInputString("Type your SQL QUERY : ").split(" ");
+                boolean check =Arrays.stream(query)
+                        .anyMatch(n -> n.contains("."));
+                String CSVname = null;
+                if(check){
+                    CSVname = Arrays.stream(query)
+                            .filter(n -> n.contains("."))
+                            .collect(Collectors.toList()).get(0);
                 }
+                path = csvLoader.getCSVLinkbyName(CSVname);
+                data = csvLoader.getInputFile ( path ,"," );
+                String[] titles = csvLoader.getFirstLine( path,"," );
+
+                if( !function.checkIfCSVisCorrect( data )  ) {
+                    view.printString("Wrong format of data  !!!");
+                    clear();
+                    exit();
+                }else if ( Arrays.stream(query).anyMatch(n -> n.equals("*")) && Arrays.stream(query).count()<5 ){
+                    view.printListOfLists(  function.rowsAll(titles, data) ) ;
+                }
+
+                if ( Arrays.stream(query).anyMatch(n -> n.equals("where"))){
+                        view.printListOfLists( function.filterRow( titles, data,"participation", 5000 ) );
+                }
+
+
+
+
+                //        view.printListOfLists(filterRow( data,"participation", 5000 ));
+                //        view.printListOfLists(function.showColumn( titles, function.filterRow( titles, data,"participation", 5000 ), "full_name","participation" ));
+
+//                view.printListOfLists(  function.showColumn(titles, function.rowsAll(titles, data),"full_name" ,"participation" ) );
+//                view.printListOfLists(  function.rowsAll(titles, data) ) ;
+
+
+                //        int totalsum =  function.sumByColumn(  titles, data, "participation" );
+                //        view.printInt( totalsum );
+
+
+
+
                 // code block
                 break;
 

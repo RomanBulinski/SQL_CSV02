@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class View {
 
-    Scanner reader = new Scanner(System.in);
+
 
     public void formatPrintLineList( List<String> oneLine ){
         for( String element : oneLine){
@@ -50,16 +50,19 @@ public class View {
     }
 
     public Integer getInputInt( String labelText ){
+        Scanner reader = new Scanner(System.in);
         System.out.println( labelText );
         int n = reader.nextInt(); // Scans the next token of the input as an int.
+//        reader.close();
         return  n;
     }
 
     public String getInputString( String labelText ){
+        Scanner reader = new Scanner(System.in);
         System.out.println( labelText );
-        String n =null;
-        reader.nextLine();
-        n = reader.nextLine();
+        String n = reader.nextLine();
+//        reader.nextLine();
+
         return  n;
     }
 

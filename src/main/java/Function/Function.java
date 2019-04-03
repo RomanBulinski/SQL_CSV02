@@ -9,6 +9,7 @@ public class Function {
 
 
 
+
     public boolean checkIfCSVisCorrect ( List<List< String >> data ){
         List<Integer> sizes =  data.stream()
                 .map( n-> n.size() )
@@ -61,14 +62,12 @@ public class Function {
         return column;
     }
 
-
     public List<List< String >> filterRow( String[] titles, List<List< String >> data, String columnTitle, Integer value ){
         int index = coulmnTranslator( columnTitle  ,titles);
         return data.stream()
                 .filter( n-> Integer.valueOf( n.get(index) ) < value )
                 .collect(Collectors.toList());
     }
-
 
     public int coulmnTranslator( String columnTiltle, String[] firstLine) {
         int index = -1;
@@ -80,7 +79,6 @@ public class Function {
         return index;
     }
 
-
     public int sumByColumn( String[] titles, List<List< String >> data, String columnTitle ){
         int index = coulmnTranslator( columnTitle ,titles);
         Integer sumOf = data.stream()
@@ -88,6 +86,7 @@ public class Function {
                 .sum();
         return sumOf;
     }
+
 
 
 }

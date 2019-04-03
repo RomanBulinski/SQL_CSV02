@@ -43,7 +43,9 @@ public class CSVLoader {
     public String[] getFirstLine(String inputFilePath, String delimiter) {
         String[] firstLine = new String[0];
         try {
-            BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
+            File inputF = new File(inputFilePath);
+            InputStream inputFS = new FileInputStream(inputF);
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
             String line = br.readLine();
             firstLine = line.split(delimiter);
             br.close();
@@ -53,5 +55,10 @@ public class CSVLoader {
         return firstLine;
     }
 
+
+    public String getCSVLinkbyName(String name){
+        String link = "/home/roman/codecool/40_Advanced/04_TW_FP/02SQL_CSV/SQL_CSV02/src/main/sources/";
+        return link+name;
+    }
 
 }
