@@ -40,7 +40,6 @@ public class CSVLoader {
         return map;
     };
 
-
     public String[] getFirstLine(String inputFilePath, String delimiter) {
         String[] firstLine = new String[0];
         try {
@@ -53,9 +52,6 @@ public class CSVLoader {
         }
         return firstLine;
     }
-
-
-
 
 
 }

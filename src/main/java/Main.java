@@ -15,9 +15,10 @@ public class Main {
     public static void main(String[] args) {
 
         String path = "/home/roman/codecool/40_Advanced/04_TW_FP/02SQL_CSV/SQL_CSV02/src/main/sources/txt.csv";
-        Controler controler = new Controler(path);
+        Controler controler = new Controler( path );
 
-
+        controler.printMenu();
+        controler.doJob();
 
     }
 

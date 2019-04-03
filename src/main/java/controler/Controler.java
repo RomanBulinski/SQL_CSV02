@@ -22,6 +22,7 @@ public class Controler {
 
 
     public Controler(String path) {
+
         this.path = path;
         csvLoader = new CSVLoader();
         data = csvLoader.getInputFile ( path ,"," );
@@ -29,20 +30,30 @@ public class Controler {
         view= new View();
         function = new Function();
 
+    }
+
+    public void printMenu(){
+        List<String> menuList = Arrays.asList("Type question : ","Exit : ");
+        view.printMenu(menuList);
+    }
+
+
+    public void doJob(){
+
         String[] titles = csvLoader.getFirstLine( path,"," );
 
 //        view.printListOfLists(filterRow( data,"participation", 5000 ));
 //        view.printListOfLists(function.showColumn( titles, function.filterRow( titles, data,"participation", 5000 ), "full_name","participation" ));
 
         view.printListOfLists(  function.showColumn(titles, function.rowsAll(titles, data),"participation" ) );
+        view.printListOfLists(  function.rowsAll(titles, data) ) ;
 
-        int totalsum =  function.sumByColumn(  titles, data, "participation" );
-        view.printInt( totalsum );
+        view.isCorrectInformation( function.checkIfCSVisCorrect( data )   );
 
+//        int totalsum =  function.sumByColumn(  titles, data, "participation" );
+//        view.printInt( totalsum );
 
     }
-
-
 
 
 
