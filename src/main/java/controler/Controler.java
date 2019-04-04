@@ -47,64 +47,68 @@ public class Controler {
             switch (view.getInputInt("Type your choise : ")) {
 
                 case (1):
+
                     String query = view.getInputString("Type your SQL QUERY : ");
                     query = query.toLowerCase();
                     String[] words = query.split(" ");
                     boolean check = Arrays.stream(words)
-                            .anyMatch(n -> n.contains("."));
+                            .anyMatch(n -> n.contains(".csv"));
                     String CSVname = null;
+
                     if (check) {
                         CSVname = Arrays.stream(words)
-                                .filter(n -> n.contains("."))
+                                .filter(n -> n.contains(".csv"))
                                 .collect(Collectors.toList()).get(0);
                     }
+
                     path = csvLoader.getCSVLinkbyName(CSVname);
-                    data = csvLoader.getInputFile(path, ",");
+                    data = csvLoader.getInputFile( path, ",");
                     String[] titles = csvLoader.getFirstLine(path, ",");
 
                     if (!function.checkIfCSVisCorrect(data)) {
                         view.printString("Wrong format of data  !!!");
                         clear();
-                        exit();
                     }
 
-                    if (Arrays.stream(words).anyMatch(n -> n.equals("*")) && Arrays.stream(words).count() < 5) {
-                        view.printListOfLists(function.rowsAll(titles, data));
+                    if (Arrays.stream(words).anyMatch(n -> n.equals("*")) ) {
+                        data = function.rowsAll(titles, data);
                     }
 
                     if (Arrays.stream(words).anyMatch(n -> n.equals("where"))) {
 
+                         List<String> splitedQuery = Stream.of(query.split("where"))
+                                 .map(elem -> new String(elem))
+                                 .collect(Collectors.toList());
 
-                        List<String> splitedQuery = Stream.of(query.split("where"))
+                        String arg = ( splitedQuery.get(1).split(" ") )[1];
+                        String sign = ( splitedQuery.get(1).split(" ") )[2];
+                        int argValue = Integer.valueOf((splitedQuery.get(1).split(" "))[3]);
+                        data = function.filterRow(titles, data, arg, sign, argValue);
+
+                    }
+
+                    if (Arrays.stream(words).anyMatch(n -> n.equals("*")) ) {
+                        data = function.rowsAll(titles, data);
+                    }
+
+                    if ( !Arrays.stream(words).anyMatch(n -> n.equals("*")) ) {
+                        List<String> splitedQuery = Stream.of(query.split("from"))
                                 .map(elem -> new String(elem))
                                 .collect(Collectors.toList());
 
-//                    Arrays.stream(splitedQuery.get(1).split(" ")).anyMatch( n-> words.   )
-
-                        if (Arrays.stream(splitedQuery.get(0).split(" ")).anyMatch(n -> n.equals("*"))) {
-
-                            String arg = (splitedQuery.get(1).split(" "))[0];
-                            int argValue = Integer.valueOf((splitedQuery.get(1).split(" "))[2]);
-
-                            view.printListOfLists(function.filterRow(titles, data, arg, argValue));
-
-                        }
-
-//                    boolean check =Arrays.stream(words)
-//                            .anyMatch(n -> n.equals(  ));
+                        data = function.showColumn( titles,data,"full_name" ,"participation" );
                     }
 
+                    view.printListOfLists(data);
 
-                    //        view.printListOfLists(filterRow( data,"participation", 5000 ));
-                    //        view.printListOfLists(function.showColumn( titles, function.filterRow( titles, data,"participation", 5000 ), "full_name","participation" ));
 
-//                view.printListOfLists(  function.showColumn(titles, function.rowsAll(titles, data),"full_name" ,"participation" ) );
+
 //                view.printListOfLists(  function.rowsAll(titles, data) ) ;
 
                     //        int totalsum =  function.sumByColumn(  titles, data, "participation" );
                     //        view.printInt( totalsum );
 
-                    // code block
+
                     break;
 
                 case (2):
@@ -113,13 +117,10 @@ public class Controler {
                     clear();
                     break;
             }
-
-
-
-
         }
-
-
-
     }
 }
+
+
+//                        select * from txt.csv where participation > 6000
+//                        select participation from txt.csv where participation > 6000

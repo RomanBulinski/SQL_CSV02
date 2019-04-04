@@ -62,7 +62,6 @@ public class View {
         System.out.println( labelText );
         String n = reader.nextLine();
 //        reader.nextLine();
-
         return  n;
     }
 
