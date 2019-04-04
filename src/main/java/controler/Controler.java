@@ -39,33 +39,38 @@ public class Controler {
     }
 
     public void doJob() {
-        switch (view.getInputInt("Type your choise : ")) {
-            case (1):
 
-                String query = view.getInputString("Type your SQL QUERY : ");
-                query = query.toLowerCase();
-                String[] words = query.split(" ");
-                boolean check = Arrays.stream(words)
-                        .anyMatch(n -> n.contains("."));
-                String CSVname = null;
-                if (check) {
-                    CSVname = Arrays.stream(words)
-                            .filter(n -> n.contains("."))
-                            .collect(Collectors.toList()).get(0);
-                }
-                path = csvLoader.getCSVLinkbyName(CSVname);
-                data = csvLoader.getInputFile(path, ",");
-                String[] titles = csvLoader.getFirstLine(path, ",");
+        boolean flag = true;
 
-                if (!function.checkIfCSVisCorrect(data)) {
-                    view.printString("Wrong format of data  !!!");
-                    clear();
-                    exit();
-                }
+        while(flag){
 
-                if (Arrays.stream(words).anyMatch(n -> n.equals("*")) && Arrays.stream(words).count() < 5) {
-                    view.printListOfLists(function.rowsAll(titles, data));
-                }
+            switch (view.getInputInt("Type your choise : ")) {
+
+                case (1):
+                    String query = view.getInputString("Type your SQL QUERY : ");
+                    query = query.toLowerCase();
+                    String[] words = query.split(" ");
+                    boolean check = Arrays.stream(words)
+                            .anyMatch(n -> n.contains("."));
+                    String CSVname = null;
+                    if (check) {
+                        CSVname = Arrays.stream(words)
+                                .filter(n -> n.contains("."))
+                                .collect(Collectors.toList()).get(0);
+                    }
+                    path = csvLoader.getCSVLinkbyName(CSVname);
+                    data = csvLoader.getInputFile(path, ",");
+                    String[] titles = csvLoader.getFirstLine(path, ",");
+
+                    if (!function.checkIfCSVisCorrect(data)) {
+                        view.printString("Wrong format of data  !!!");
+                        clear();
+                        exit();
+                    }
+
+                    if (Arrays.stream(words).anyMatch(n -> n.equals("*")) && Arrays.stream(words).count() < 5) {
+                        view.printListOfLists(function.rowsAll(titles, data));
+                    }
 
                     if (Arrays.stream(words).anyMatch(n -> n.equals("where"))) {
 
@@ -102,14 +107,19 @@ public class Controler {
                     // code block
                     break;
 
-            case (2):
-                clear();
-                exit();
-                break;
-
-            default:
-                // code block
-
+                case (2):
+                    flag = false;
+                    exit();
+                    clear();
+                    break;
             }
+
+
+
+
         }
+
+
+
     }
+}
