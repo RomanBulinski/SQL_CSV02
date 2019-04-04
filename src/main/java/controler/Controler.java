@@ -23,8 +23,7 @@ public class Controler {
     List<List<String>> data;
     String[] firstLine;
     Function function;
-
-
+    
     public Controler() {
         csvLoader = new CSVLoader();
         view = new View();
@@ -83,8 +82,8 @@ public class Controler {
                         String arg = ( splitedQuery.get(1).split(" ") )[1];
                         String sign = ( splitedQuery.get(1).split(" ") )[2];
                         int argValue = Integer.valueOf((splitedQuery.get(1).split(" "))[3]);
-                        data = function.filterRow(titles, data, arg, sign, argValue);
 
+                        data = function.filterRow(titles, data, arg, sign, argValue);
                     }
 
                     if (Arrays.stream(words).anyMatch(n -> n.equals("*")) ) {
@@ -96,18 +95,25 @@ public class Controler {
                                 .map(elem -> new String(elem))
                                 .collect(Collectors.toList());
 
-                        data = function.showColumn( titles,data,"full_name" ,"participation" );
+                        String firstPart = splitedQuery.get(0);
+
+                        String[] words2 =  firstPart.split(" ");
+
+                        List<String> titlesA = new ArrayList<>();
+                        Arrays.stream(titles).forEach(titlesA::add);
+
+                        List<String> args = Arrays.stream(words2)
+                                .filter(i -> titlesA.contains(i))
+                                .collect(Collectors.toList());
+
+                        data = function.showColumn( titles,data, args );
                     }
+
 
                     view.printListOfLists(data);
 
-
-
-//                view.printListOfLists(  function.rowsAll(titles, data) ) ;
-
                     //        int totalsum =  function.sumByColumn(  titles, data, "participation" );
                     //        view.printInt( totalsum );
-
 
                     break;
 
@@ -121,6 +127,8 @@ public class Controler {
     }
 }
 
-
+//                        select * from txt.csv
 //                        select * from txt.csv where participation > 6000
 //                        select participation from txt.csv where participation > 6000
+//                        select full_name participation from txt.csv where participation > 6000
+//                        select full_name type from txt.csv where participation > 6000

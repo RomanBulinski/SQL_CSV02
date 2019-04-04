@@ -42,7 +42,27 @@ public class Function {
                 .collect(Collectors.toList());
     }
 
-    public List<List<String>> showColumn(String[] titles, List<List<String>> data, String... args) {
+    public List<List<String>> showColumn(String[] titles, List<List<String>> data, List<String> args ) {
+
+        List<Integer> argumentes = args.stream()
+                .map(n -> coulmnTranslator(n, titles))
+                .collect(Collectors.toList());
+
+        List<List<String>> column = data.stream()
+                .map(n -> {
+                    List<String> temp = new ArrayList<>();
+                    for (Integer index : argumentes) {
+                        temp.add(n.get(index));
+                    }
+                    return temp;
+                })
+                .collect(Collectors.toList());
+        return column;
+    }
+
+
+
+    public List<List<String>> showColumnVargs(String[] titles, List<List<String>> data, String... args) {
 
         List<String> argsh = Arrays.asList(args);
         List<Integer> argumentes = argsh.stream()
